@@ -9,20 +9,20 @@ The reason for me chosing this problem is that after reading both the problems, 
 Java 8
 
 #### Usage
-* How to run the application.
+##### How to run the application
 Download the executable [jar](numbers-converter/target/number-converter-1.0-SNAPSHOT.jar)
 From command line or Unix shell as the case may be, run the below command, executing from the directory where the above jar is saved.
 java -jar number-converter-1.0-SNAPSHOT.jar
 
 Once run, from there on, the application is interactive to guide the user.
 
-* How to build the jar again, run Unit tests, generate Javadocs. 
+##### How to build the jar again, run Unit tests, generate Javadocs</b>
 
-Clone the [numbers-converter](numbers-converter) repository
-And from numbers-converter directory run
-`mvn clean install'
+Clone the [numbers-converter](https://github.com/itbhuabhi/aconex-coding-challenge) repository
+And from numbers-converter directory run<br>
+`mvn clean install`
 
-#### Application Flow explaining the program flow and usage of different classes.
+#### Application Flow explaining the programming logic and usage of different classes.
 
 Please note similar explaination is given in the Javadocs of the com.aconex.challenge.numbertowords.Main class. 
 Please download the 
