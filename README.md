@@ -3,21 +3,29 @@
 Basically this application helps to replace some or all of the digits of a phone number, with words from a given dictionary so that it is easier to remember.
 
 #### Reason I chose this problem
-The reason for me chosing this problem is that after reading both the problems the problem statement was more clear to me with this. And in absolute terms I found this problem interesting and challenging enough to interest me and make an impression.
+The reason for me chosing this problem is that after reading both the problems, this problem statement was more clear to me. And in absolute terms I found this problem challenging enough, if solved well, one can make a mark.
 
 #### Pre-requisite
 Java 8
 
 #### Usage
+* How to run the application.
 Download the executable [jar](numbers-converter/target/number-converter-1.0-SNAPSHOT.jar)
-From command line or Windows shell as the case may be, run the below command, executing from the directory where the above jar is saved.
+From command line or Unix shell as the case may be, run the below command, executing from the directory where the above jar is saved.
 java -jar number-converter-1.0-SNAPSHOT.jar
 
 Once run, from there on, the application is interactive to guide the user.
 
+* How to build the jar again, run Unit tests, generate Javadocs. 
+
+Clone the [numbers-converter](numbers-converter) repository
+And from numbers-converter directory run
+`mvn clean install'
+
 #### Application Flow explaining the program flow and usage of different classes.
 
-Please note similar explaination is given in the Javadocs of the com.aconex.challenge.numbertowords.Main class. Navigating to it allows in turn to navigate to Javadocs of other classes. 
+Please note similar explaination is given in the Javadocs of the com.aconex.challenge.numbertowords.Main class. 
+Please download the 
 Note-> The last section on how this application can be enhanced is only here and not in the Javadocs.
 
 The starting point of the application is `com.aconex.challenge.numbertowords.Main`. The flow of the application can be summarized as.
