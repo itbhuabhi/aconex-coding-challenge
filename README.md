@@ -3,7 +3,7 @@
 Basically this application helps to replace some or all of the digits of a phone number, with words from a given dictionary so that it is easier to remember.
 
 #### Reason I chose this problem
-The reason for me chosing this problem is that after reading both the problems, this problem statement was more clear to me. And in absolute terms I found this problem challenging enough, if solved well, one can make a mark.
+The reason for me chosing this problem is that after reading both the problems couple of times, this problem statement was more clear to me. And in absolute terms I found this problem challenging enough.
 
 #### Pre-requisite
 Java 8
