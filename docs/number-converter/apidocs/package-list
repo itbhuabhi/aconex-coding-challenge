@@ -1,0 +1,7 @@
+com.aconex.challenge.numbertowords
+com.aconex.challenge.numbertowords.config
+com.aconex.challenge.numbertowords.converter
+com.aconex.challenge.numbertowords.dictionary
+com.aconex.challenge.numbertowords.dictionary.transformers
+com.aconex.challenge.numbertowords.util
+i18n
