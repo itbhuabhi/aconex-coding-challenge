@@ -31,7 +31,7 @@ public class ApplicationIntegrationTest extends CommonTestBase {
 				Mockito.CALLS_REAL_METHODS);
 		when(applicationFacade.getNumbersEncodingMap())
 				.thenReturn(defaultNumberEncodingMap());
-		applicationFacade.initDictionaryContainer();
+		applicationFacade.initDictionaryFactory();
 		return applicationFacade;
 
 	}

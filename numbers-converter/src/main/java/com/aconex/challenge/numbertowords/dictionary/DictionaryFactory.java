@@ -16,10 +16,10 @@ import com.aconex.challenge.numbertowords.util.CollectionsUtil;
  * Or if the dictionary is large it can be made persistent to some NoSQL implementation like Infinispan
  * 
  * @author Abhishek Agarwal
- * @see HashBasedDictionaryContainer
+ * @see HashBasedDictionaryFactory
  *
  */
-public abstract class DictionaryContainer {
+public abstract class DictionaryFactory {
 
 	private Dictionary dictionary;
 	
@@ -34,7 +34,7 @@ public abstract class DictionaryContainer {
 	 * @param wordConverter Word converter which would do any pre-processing on each dictionary word before converting it to a number based on the number encoding.
 	 */
 
-	public DictionaryContainer(InputTransformer<String> wordConverter) {
+	public DictionaryFactory(InputTransformer<String> wordConverter) {
 		this.wordConverter = wordConverter;
 
 	}

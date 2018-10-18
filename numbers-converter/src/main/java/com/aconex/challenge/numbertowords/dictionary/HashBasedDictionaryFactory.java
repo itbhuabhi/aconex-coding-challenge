@@ -7,14 +7,14 @@ import java.util.Set;
 
 import com.aconex.challenge.numbertowords.dictionary.transformers.InputTransformer;
 /**
- * An implementation of {@link DictionaryContainer} which relies on hash based data structure for the {@link Dictionary}
+ * An implementation of {@link DictionaryFactory} which relies on hash based data structure for the {@link Dictionary}
  * @author Abhishek Agarwal
  *
  */
 
-public class HashBasedDictionaryContainer extends DictionaryContainer {
+public class HashBasedDictionaryFactory extends DictionaryFactory {
 
-	public HashBasedDictionaryContainer(InputTransformer<String> wordToNumberConverter) {
+	public HashBasedDictionaryFactory(InputTransformer<String> wordToNumberConverter) {
 		super(wordToNumberConverter);
 	}
 

@@ -1,4 +1,4 @@
 /**
- * Provides classes for kicking off the application and mainly integrating the application code. 
+ * Contains classes related to application configuration
  */
 package com.aconex.challenge.numbertowords.config;
