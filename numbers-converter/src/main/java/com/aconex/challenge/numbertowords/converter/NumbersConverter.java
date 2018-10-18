@@ -9,7 +9,7 @@ import com.aconex.challenge.numbertowords.dictionary.transformers.InputTransform
 import com.aconex.challenge.numbertowords.dictionary.transformers.TransformerContainer;
 
 /**
- * It accepts multi please streams of numbers and sequentially converts each number to a word combination. Presently processing of numbers is done sequentially
+ * It accepts multiples streams of numbers and sequentially converts each number to a word combination. Presently processing of numbers is done sequentially
  * but can be extended to do it parallel in a multi-threaded environment.
  *
  * @author Abhishek Agarwal

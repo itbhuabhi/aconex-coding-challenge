@@ -8,12 +8,12 @@ import com.aconex.challenge.numbertowords.dictionary.transformers.TransformerCon
 import com.aconex.challenge.numbertowords.util.CollectionsUtil;
 
 /**
- * Abstract class which parses each word of a each dictionary source, applies validation and transformation on each word, 
+ * Abstract class which parses each word of every dictionary source, applies validation and transformation on each word, 
  * then converts that word to a number and stores that the number representation of the word and the word itself in the dictionary.
  * 
- * The creation of the {@link Dictionary} and the type of dictionary is left to the implementation class.
- * This allows to easily plug different types of Dictionary implementations. Like the data structure for the dictionary can be hash value based or tries.
- * Or if the dictionary is large it can be made persistent to some NoSQL implementation like Infinispan
+ * <p>The creation of the {@link Dictionary} and the type of dictionary is left to the implementation class.
+ * This allows to easily plug different types of Dictionary implementations. Like the data structure for the dictionary can be hash based or tries.
+ * Or if the dictionary is too large it can be made persistent to some NoSQL implementation like Infinispan
  * 
  * @author Abhishek Agarwal
  * @see HashBasedDictionaryFactory
@@ -24,7 +24,7 @@ public abstract class DictionaryFactory {
 	private Dictionary dictionary;
 	
 	/**
-	 * Word converter which would do any pre-processing on each dictionary word before converting it to a number based on the number encoding. 
+	 * Word converter which would do any pre-processing, if decorated with other transformer, on each dictionary word before converting it to a number based on the number encoding. 
 	 */
 
 	private InputTransformer<String> wordConverter;
@@ -43,8 +43,8 @@ public abstract class DictionaryFactory {
 		return dictionary;
 	}
 	/**
-	 * Iterates through each dictionary source and then each element of the dictionary, and then transforms it to a number, and the combination of word and number are stored in the dictionary<br>
-	 * Presently this is single threaded but it can be overriden to make it multi-threaded and at the same time the dictionary implementaion has to be made thread safe 
+	 * Iterates through each dictionary source and then each element of the dictionary, and then transforms it to a number, and the combination of word and number are stored in the dictionary.
+	 * Presently this is single threaded but it can be overridden to make it multi-threaded and at the same time the dictionary implementaion has to be made thread safe. 
 	 * @param dictionarySources List of dictionary sources where each element of every source is dictionary word
 	 */
 

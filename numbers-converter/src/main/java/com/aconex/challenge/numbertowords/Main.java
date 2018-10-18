@@ -3,6 +3,8 @@ package com.aconex.challenge.numbertowords;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -23,12 +25,14 @@ import com.aconex.challenge.numbertowords.dictionary.transformers.UpperCaseTrans
 import com.aconex.challenge.numbertowords.util.CollectionsUtil;
 import com.aconex.challenge.numbertowords.util.MessagesUtil;
 import com.aconex.challenge.numbertowords.util.StringUtil;
-
+//Added quite verbose Javadoc here at this becomes the central point of understanding the flow and can be used to navigate to other classes.
 /**
- * This is the starting point of the application. The flow of the application can be summarized as.<br>
- * There are two main inputs given to the application by the user. File(s) containing different phone numbers which are to be translated.
+ * This is the starting point of the application. The flow of the application can be summarized as.
+ * 
+ * <p>There are two main inputs given to the application by the user. File(s) containing different phone numbers which are to be translated.
  * And a dictionary file which contains the different words which are to be used to convert the number into word combination(s).
- * The class {@link UserInputHelper} is used to interact with the user using command line, and receive the file paths for the dictionary words and phone numbers.
+ * The class {@link UserInputHelper} is used to interact with the user using command line,
+ * and receive the file paths for the dictionary words and phone numbers given by the users.
  * 
  * <p>When numbers are converted to a word, each character of the word maps uniquely to a digit. 
  * This number encoding is stored in an internal configuration file and is parsed by {@link NumbersEncodingParser}, 
@@ -46,14 +50,15 @@ import com.aconex.challenge.numbertowords.util.StringUtil;
  * <p>So this suggests that both user dictionary words and phone numbers involve series of transformation.
  * 
  * 
- * <p>To support these transformations there is an interface {@link InputTransformer} which defines a common contract. 
- * And allows the transformations to be chained together using a {@link TransformerContainer}.
+ * <p>To support these transformations there is a common contract {@link InputTransformer} , defined. 
+ * Which allows the transformations to be chained together and the output
+ * of one transformation is piped to another by passing around instance of {@link TransformerContainer}.
  * It is passed around from one transformer to another and contains the input, and is fed with the transformed output and error, if any.
  * 
- * <p>The chaining of transformers makes it easy if some of the business rules related to transformation are changed
- * Or the application needs to support other language, or some other number encoding.
- * The various transformers used in the application are as
- * For dictionary words
+ * <p>The chaining of transformers makes it easy if some of the business rules related to transformation are changed.
+ * Or say the application needs to support some other language, or some other number encoding.
+ * The various transformers used in the application are as.<br>
+ * For dictionary words:
  * <ul>
  * 	<li>Strip punctuations and whitespaces and validate after that. ({@link StripAndValidateInput})</li>
  * 	<li>Convert it to uppercase ({@link UpperCaseTransformer})</li>
@@ -70,13 +75,13 @@ import com.aconex.challenge.numbertowords.util.StringUtil;
  * creates the dictionary, transforms each word to a number and stores it in the dictionary.
  * The actual instantiation of the {@link Dictionary} and the data structure used for {@link Dictionary} is left to
  * the concrete implementation of the {@link DictionaryFactory}. Presently, I have chosen a dictionary 
- * which relies on hash set as an internal datastructure, but it can some other structure or a NoSQL DB if the input dictionary 
+ * which relies on hash set as an internal datastructure, but it can some be some other data structure or a NoSQL DB if the input dictionary 
  * is too huge.
  * 
- * Once the dictionary is created the class {@link NumbersConverter} iterates through each phone number and 
+ * <p>Once the dictionary is created the class {@link NumbersConverter} iterates through each phone number and 
  * passes it to {@link NumberConverterAlgorithm} which finds the mapping word combinations.
  * 
- * The brief description of the algorithm is 
+ * The brief description of this algorithm is 
  * <ul>
  * 	<li>Iterate through each prefix one by one and search for matching word(s). 
  * 		If matching word(s) can be found use them, 
@@ -88,7 +93,7 @@ import com.aconex.challenge.numbertowords.util.StringUtil;
  * As matching combinations are found for each number, the class {@link NumbersConverter} sends it back 
  * to this class by a call back handler, which in turns displays the output on console to the user.
  * 
- * Lastly the class {@link ApplicationFacade} as the name suggests brings all these pieces together.
+ * <p>Lastly the class {@link ApplicationFacade} as the name suggests brings all these pieces together.
  * 
  * @author Abhishek Agarwal
  *
@@ -100,57 +105,78 @@ public class Main {
 	private static final String SAMPLE_NUMBERS_RESOURCE_PATH = "samples/samplePhoneNumbers.txt";
 
 	private static final String NO_MATCH_MESSAGE_KEY = "number.none.match";
+	private static final String IO_ERROR_MESSAGE_KEY = "io.error";
+	
 	private static final String MATCH_MESSAGE_KEY = "number.matches";
 	private static final String INVALID_INPUT_MESSAGE_KEY = "invlaid.number";
 	
 	
-	private ApplicationFacade applicationFacade;
+	/**
+	 * Starting point of the application
+	 * @param strArray Array of numbers file path, if non-empty
+	 */
 
-	public Main() {
-		applicationFacade = new ApplicationFacade();
-	}
-
-
-	public static void main(String[] strArray) throws IOException {
-		
-		Main main = new Main();
-		
+	public static void main(String[] strArray)  {
 		UserInputHelper userInputHelper = new UserInputHelper();
 		userInputHelper.parseInputInteractively(strArray);
 		
 		String usersDictionaryPath = userInputHelper.getDictionaryPath();
 		List<String> usersNumbersFilesPath = userInputHelper.getPhoneNumbersFilePaths();
 		
-		List<Stream<String>> dictionarySources = new ArrayList<Stream<String>>();
+		List<Stream<String>> dictionaryStreams = new ArrayList<Stream<String>>();
 		List<Stream<String>> numbersStreams = new ArrayList<Stream<String>>();
-		
-		//If no external dictionary is provided, then we would use an Internal sample dictionary
-		if(StringUtil.isBlankOrNull(usersDictionaryPath)) {
-			Stream<String> sampleDictionarySource = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream(SAMPLE_DICTIONARY_RESOURCE_PATH))).lines();
-			dictionarySources.add(sampleDictionarySource);
-		}
-		else {
-			dictionarySources.add(Files.lines(Paths.get(usersDictionaryPath)));
-		}
-		
-		if(CollectionsUtil.isNullOrEmpty(usersNumbersFilesPath)) {
-			Stream<String> sampleNumbersStream = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream(SAMPLE_NUMBERS_RESOURCE_PATH))).lines();
-			numbersStreams.add(sampleNumbersStream);
-		}
-		else {
+		BufferedReader sampleDictionaryReader = null;
+		BufferedReader samplePhoneNumbersFileReader = null;
+		// Did not use Java 7 try with resources feature.
+		// Since needed to generate dynamic no. of streams from files(user can pass in any number of phone number files)
+		// And the APIs are slightly different for reading a system file versus reading it from class path.
+
+		try {
+			//If no external dictionary is provided, then we would use an Internal sample dictionary
+			if(StringUtil.isBlankOrNull(usersDictionaryPath)) {
+				sampleDictionaryReader = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream(SAMPLE_DICTIONARY_RESOURCE_PATH)));
+				Stream<String> sampleDictionarySource = sampleDictionaryReader.lines();
+				dictionaryStreams.add(sampleDictionarySource);
+			}
+			else {
+				dictionaryStreams.add(Files.lines(Paths.get(usersDictionaryPath)));
+			}
 			
-			for(String filePath : usersNumbersFilesPath) {
-				numbersStreams.add(Files.lines(Paths.get(filePath)));
+			if(CollectionsUtil.isNullOrEmpty(usersNumbersFilesPath)) {
+				samplePhoneNumbersFileReader = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream(SAMPLE_NUMBERS_RESOURCE_PATH)));
+				Stream<String> sampleNumbersStream = samplePhoneNumbersFileReader.lines();
+				numbersStreams.add(sampleNumbersStream);
+			}
+			else {
+				
+				for(String filePath : usersNumbersFilesPath) {
+					numbersStreams.add(Files.lines(Paths.get(filePath)));
+				}
+			}
+			
+			convert(dictionaryStreams, numbersStreams);
+		}
+		catch(IOException  | UncheckedIOException uio) {
+			System.err.println(MessagesUtil.getString(IO_ERROR_MESSAGE_KEY));
+		}
+		finally {
+			dictionaryStreams.forEach((dictionaryStream) -> dictionaryStream.close());
+			numbersStreams.forEach((dictionaryStream) -> dictionaryStream.close());
+			if(sampleDictionaryReader != null) {
+				try {
+					sampleDictionaryReader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if(samplePhoneNumbersFileReader != null) {
+				try {
+					sampleDictionaryReader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
-		
-		convert(dictionarySources, numbersStreams);
-		
-		
-
-
-		
-
 	}
 	
 	private static void convert(List<Stream<String>> dictionarySources, List<Stream<String>> numbersStreams) {
@@ -167,7 +193,6 @@ public class Main {
 							System.out.println(MessagesUtil.getString(NO_MATCH_MESSAGE_KEY,numStringContainer.getInput()));
 						} else {
 							System.out.println(MessagesUtil.getString(MATCH_MESSAGE_KEY,numStringContainer.getInput(),matchedWords));
-							//System.out.println(numStringContainer.getInput() + " matches:: " + matchedWords);
 						}
 					} else {
 						System.err.println(MessagesUtil.getString(INVALID_INPUT_MESSAGE_KEY,numStringContainer.getInput()));

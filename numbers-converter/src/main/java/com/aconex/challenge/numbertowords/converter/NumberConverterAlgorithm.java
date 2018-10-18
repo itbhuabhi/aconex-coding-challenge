@@ -9,35 +9,39 @@ import com.aconex.challenge.numbertowords.dictionary.transformers.InputTransform
 import com.aconex.challenge.numbertowords.dictionary.transformers.TransformerContainer;
 import com.aconex.challenge.numbertowords.util.CollectionsUtil;
 /**
- * This is the one of the core class which is fed with the dictionary and converts a number to a set of matching word combinations.<br>
- * The algorithm uses a combination of recursive and iterative approach. It is outlined as<br>
- * Iterate through the length  of the number string and get a prefix string and suffix string at each iteration.<br>
- * So say if the number string is 2255. At each iteration the prefix and suffix would be <br>
+ * This is the one of the core class which is fed with the dictionary and converts a number to a set of matching word combinations.
+ * The algorithm uses a combination of recursive and iterative approach. It is outlined as
+ * Iterate through the length  of the number string and get a prefix string and suffix string at each iteration.
+ * 
+ * <p>So say if the number string is 2255. At each iteration the prefix and suffix would be <br>
  * Iteration-1:: Prefix: 2, Suffix: 255<br>
  * Iteration-1:: Prefix: 22, Suffix: 55<br>
  * Iteration-1:: Prefix: 225, Suffix: 5<br>
  * Iteration-1:: Prefix: 2255, Suffix: Empty<br>
- * The algorithm will then search for an exact match of the prefix in the dictionary.<br>
+ * The algorithm will then search for an exact match of the prefix in the dictionary.
  * If there is an exact match found, make a recursive call to get all the matching combinations for the suffix string 
  * and concatenate each combination with each exact dictionary match for the prefix, separated by a delimiter.<br>
  * So in the above example for Iteration-1, say if Prefix: 2 matches word 'A', 
- * we would make a recursive call to get all the matching combinations for Suffix: 255<br><br>
+ * we would make a recursive call to get all the matching combinations for Suffix: 255
  * 
- * We are allowed to retain digit(s) as-is even if there is no match. The possible number of consecutive digits which can be retained as-is
+ * <p>We are allowed to retain digit(s) as-is even if there is no match. The possible number of consecutive digits which can be retained as-is
  * is retrieved from the Configuration. The initial requirement was to retain only 1 digit, but we can configure it to retain 1,2,3 or any number of consecutive digits as-is without any match.
  * Just the configuration element needs to list it down. So say if we want to retain 1 and 3 consecutive digits as-is even with out any match, 
  * then the configuration element "consecutive.unmatched.digits" needs to have value as 1,3. 
  * 
- * If there is no exact match found for the prefix<br>
+ * <p>If there is no exact match found for the prefix<br>
  * - Retain prefix as-is<br> 
  * 	&nbsp;&nbsp;&nbsp;- If the length of the prefix is one of the allowed number of consecutive digits to be retained as-is.<br>
  *  &nbsp;&nbsp;&nbsp;- The immediate previous prefix string was not retained as-is.<br>
  *  
- *  And then make a recursive call to get all the matching combinations for the suffix and concatenate it with the prefix.<br>
+ *  <p>And then make a recursive call to get all the matching combinations for the suffix and concatenate it with the prefix.
  *  
- *  To the recursive call for the suffix, we would need to pass a boolean value if the prefix had exact match or not.<br>
- *  Furthermore, the concatenation of matching combinations from prefix and suffix are stored as two sets. One with exact matches i.e. all digits repalced 
- *  and other with partial matches where atleast one digit remains as-is. This is useful when we are returning the matches for the initial number string,
+ *  <p>To the recursive call for the suffix, we would need to pass a boolean value if the prefix had exact match or not, 
+ *  so that no more than the allowed digits remain as-is.
+ *  Furthermore, the concatenation of matching combinations from prefix and suffix are stored as two sets. 
+ *  One with exact matches i.e. all digits repalced 
+ *  and other with partial matches where atleast one digit remains as-is. 
+ *  This is useful when we are returning the matches for the initial number string,
  *  because we return partial matches only if there is no exact match. 
  * 
  * @author Abhishek Agarwal
@@ -51,13 +55,13 @@ public class NumberConverterAlgorithm implements InputTransformer<Set<String>> {
 	private Dictionary dictionary;
 	
 	/**
-	 * Delimitter to be used to concatenate matching words, which is determined by configuration element concatenate.delimtter. Defaults to hyphen
+	 * Delimiter to be used to concatenate matching words, which is determined by configuration element concatenate.delimtter. Defaults to hyphen
 	 */
 
 	private final String delimitter = Configuration.getInstance().wordConcatenateDelimitter();
 	
 	/**
-	 * No. of consecutive digits which can remain as-is without a matching word. Determined by configuration element consecutive.unmatched.digits
+	 * No. of consecutive digits which can remain as-is without a matching word. Determined by configuration element unchangedigits.list
 	 */
 	
 	private final int[] retainConsecutiveUnmatchedDigits = Configuration.getInstance().retainConsecutiveUnmatchedDigitsAsIs();
@@ -115,7 +119,7 @@ public class NumberConverterAlgorithm implements InputTransformer<Set<String>> {
 	
 	/**
 	 * Utility method which takes the number string whose matching combinations are to be found, 
-	 * and returns the matching combinations.<br>
+	 * and returns the matching combinations.
 	 * Lot of unit testing for this class can be covered by writing Unit tests against this method.
 	 * @param numberToConvert The number string whose matching combinations are to be found
 	 * @return Returns the matching combinations

@@ -8,7 +8,7 @@ import com.aconex.challenge.numbertowords.util.CollectionsUtil;
 
 /**
  * Transforms a word to a number based on the number encoding used to be stored in the dictionary.<br>
- * This particular class handles supplementary characters, if there is any in the word, and expects a corresponding mapping provided in the number encoding.<br>
+ * This particular class handles supplementary characters, if there is any in the word, and expects the number encoding to support that.
  * 
  * Ex-&gt; For the below sample encoding, the word CALL and ME gets converted to 2255 and 63 respectively.<br>
  * A,B,C -&gt; 2	<br>

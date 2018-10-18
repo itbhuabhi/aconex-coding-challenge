@@ -2,9 +2,9 @@ package com.aconex.challenge.numbertowords.util;
 
 import java.util.Collection;
 import java.util.Map;
-/*
+/**
  * A utility class for Collections. This has some of the methods which are not there in the Java SDK
- * We could have used a third party library like https://commons.apache.org/proper/commons-collections/
+ * Very small subset of https://commons.apache.org/proper/commons-collections/
  *
  */
 
@@ -48,6 +48,7 @@ public class CollectionsUtil {
 		}
 		return false;
 	}
+	
 	
 
 }

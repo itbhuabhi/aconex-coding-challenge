@@ -43,6 +43,7 @@ public class ApplicationIntegrationTest extends CommonTestBase {
 
 	
 
+	//No noise in the numbers and the words and words are in upper case.
 
 	@Test
 	public void test_For_Words_And_Numbers_With_No_Massaging() {
@@ -63,15 +64,16 @@ public class ApplicationIntegrationTest extends CommonTestBase {
 
 	
 
+	//Words and numbers after removing the noise are valid 
 
 	@Test
-	public void test_For_Words_And_Numbers_With_Punctuations() {
+	public void test_For_Words_And_Numbers_With_Punctuations_And_Whitespaces() {
 		ApplicationFacade applicationFacade = mockApplicationFacade();
-		applicationFacade.createAndPopulateDictionary(getDictionaryAndNumberStreams("BLL,!@#$%^&*()-+=~`|\\}]{[", "ME", "ALL", "L"));
+		applicationFacade.createAndPopulateDictionary(getDictionaryAndNumberStreams("BLL,!@#$%^&*()-+=~`|\\}]{[", "M E", "A	L L", "L"));
 		applicationFacade.initNumbersConverter();
 		NumbersConverter numbersConverter = applicationFacade.getNumbersConverter();
 		List<Stream<String>> numbersStreams = getDictionaryAndNumberStreams(
-				"225563,!@#$%^&*()-+=~`|\\\\}]{[");
+				"225 56	3,!@#$%^&*()-+=~`|\\\\}]{[");
 		Set<String> expectedWords = new HashSet<String>(
 				Arrays.asList("2-BLL-ME", "2-ALL-ME"));
 		numbersConverter.convertNumbers(numbersStreams, (numberContainer) -> {
@@ -81,6 +83,9 @@ public class ApplicationIntegrationTest extends CommonTestBase {
 
 	}
 
+	/**
+	 * Tested for words with lower case characters. Retained the punctuations as well.
+	 */
 	@Test
 	public void test_For_Words_With_Lower_Case_Characters() {
 		ApplicationFacade applicationFacade = mockApplicationFacade();
@@ -97,6 +102,9 @@ public class ApplicationIntegrationTest extends CommonTestBase {
 
 	}
 
+	/**
+	 * If there are words with invalid characters they should be simply ignored
+	 */
 	@Test
 	public void test_For_Words_With_Invalid_Characters() {
 		ApplicationFacade applicationFacade = mockApplicationFacade();
@@ -113,6 +121,9 @@ public class ApplicationIntegrationTest extends CommonTestBase {
 
 	}
 	
+	/**
+	 * If there are numbers with invalid characters the response should contain errors
+	 */
 	@Test
 	public void test_For_Numbers_With_Invalid_Characters() {
 		ApplicationFacade applicationFacade = mockApplicationFacade();

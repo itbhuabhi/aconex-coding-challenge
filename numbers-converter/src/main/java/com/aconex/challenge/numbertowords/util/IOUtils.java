@@ -1,12 +1,19 @@
 package com.aconex.challenge.numbertowords.util;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.InputStreamReader;
 
+/**
+ * Uitlity class for IO Operations. 
+ * Presently it has only one method but would always have potential to grow.
+ * @author Abhishek Agarwal
+ *
+ */
 public class IOUtils {
+	/**
+	 * Utility method to test if the given file points to a file.
+	 * @param filePath Path of the file which is to be tested.
+	 * @return true, if the file exists at the given file path
+	 */
 	public static boolean isValidFilePath(String filePath) {
 		if(StringUtil.isBlankOrNull(filePath))
 			return false;
@@ -14,11 +21,5 @@ public class IOUtils {
 		return tmpFile.isFile();
 	}
 	
-	public static BufferedReader getBufferedReaderForFile(String filePath, boolean isSystemResource) throws FileNotFoundException {
-		if(isSystemResource)
-			return new BufferedReader(new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream(filePath))));
-		else
-			return new BufferedReader(new FileReader(filePath)); 
-	}
 
 }
