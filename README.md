@@ -12,7 +12,7 @@ Java 8
 ##### How to run the application
 Download the executable [jar](numbers-converter/target/number-converter-1.0-SNAPSHOT.jar)
 From command line or Unix shell as the case may be, run the below command, executing from the directory where the above jar is saved.
-java -jar number-converter-1.0-SNAPSHOT.jar
+`java -jar number-converter-1.0-SNAPSHOT.jar`
 
 Once run, from there on, the application is interactive to guide the user.
 
@@ -22,11 +22,24 @@ Clone the [numbers-converter](https://github.com/itbhuabhi/aconex-coding-challen
 And from numbers-converter directory run<br>
 `mvn clean install`
 
+
+#### How the application is/can be enhanced
+* The requirement allows to retain only 1 consecutive digit. But I observed it becomes a limitation for lot of numbers, more so for numbers with "0" as it does not have any character match. The program through system property or configuration allows any number of digits to remain as-is, when no matching combination is found for them.
+
+* The rules related to stripping of characters can be easily changed by configuration.
+
+* Since the number encoding is read from a properties file, so it can be easily changed to something else.
+Moresoover, it does not have to be limited to English language. With some configuration changes and may be change to the chaining of transformers it can support other English like languages. The reason I said English like language because not sure if something like this is possible with my native language Hindi. And if it is it would be much more complex.
+
+* Furthermore, it can support other English like languages which have supplementary characters.
+
+* The application code can be easily modified to use some other implementation of Dictionary. Like presently Dictionary uses hash based datastructure, but it can be modified to use some thing like tries. Or even make it persistent to say some NoSQL if the dictionary is very huge.
+
+
+
 #### Application Flow explaining the programming logic and usage of different classes.
 
 Please note similar explaination is given in the Javadocs of the com.aconex.challenge.numbertowords.Main class. 
-Please download the 
-Note-> The last section on how this application can be enhanced is only here and not in the Javadocs.
 
 The starting point of the application is `com.aconex.challenge.numbertowords.Main`. The flow of the application can be summarized as.
 There are two main inputs given to the application by the user. File(s) containing different phone numbers which are to be translated. And a dictionary file which contains the different words which are to be used to convert the number into word combination(s). The class `UserInputHelper` is used to interact with the user using command line, and receives the file paths for the dictionary words and phone numbers.
@@ -66,17 +79,6 @@ Concatenate the matching combinations of the prefix and the suffix.
 As matching combinations are found for each number, the class `NumbersConverter` sends it back to the `Main` class by a call back handler, which in turns displays the output on console to the user. Lastly the class `ApplicationFacade` as the name suggests brings all these pieces together.
 
 
-#### How the application is/can be enhanced
-* The requirement allows to retain only 1 consecutive digit. But I observed it becomes a limitation for lot of numbers, more so for numbers with "0" as it does not have any character match. The program through system property or configuration allows any number of digits to remain as-is, when no matching combination is found for them.
-
-* The rules related to stripping of characters can be easily changed by configuration.
-
-* Since the number encoding is read from a properties file, so it can be easily changed to something else.
-Moresoover, it does not have to be limited to English language. With some configuration changes and may be change to the chaining of transformers it can support other English like languages. The reason I said English like language because not sure if something like this is possible with my native language Hindi. And if it is it would be much more complex.
-
-* Furthermore, it can support other English like languages which have supplementary characters.
-
-* The application code can be easily modified to use some other implementation of Dictionary. Like presently Dictionary uses hash based datastructure, but it can be modified to use some thing like tries. Or even make it persistent to say some NoSQL if the dictionary is very huge.
 
 
 
