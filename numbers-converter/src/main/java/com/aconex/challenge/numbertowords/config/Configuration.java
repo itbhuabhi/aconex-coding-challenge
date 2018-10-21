@@ -2,6 +2,8 @@ package com.aconex.challenge.numbertowords.config;
 
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.aconex.challenge.numbertowords.util.StringUtil;
 
@@ -13,8 +15,10 @@ import com.aconex.challenge.numbertowords.util.StringUtil;
  *
  */
 public class Configuration {
+	private static final Logger LOGGER = Logger.getLogger(Configuration.class.getName());
+
 	private static final String CONFIG_FILE_PATH = "configuration/application.config";
-	private static final String WORDS_CONCATENATE_DELIMITTER_KEY = "concatenate.delimtter";
+	private static final String WORDS_CONCATENATE_DELIMITER_KEY = "concatenate.delimiter";
 	private static final String RETAIN_CONS_UNMATCHED_DIGITS_ASIS_KEY = "unchangedigits.list";
 	
 	private static final String STRIP_CHARS_REGEX_KEY = "strip.chars.regex";
@@ -22,7 +26,7 @@ public class Configuration {
 	private static final String NUM_VALID_REGEX_KEY = "num.valid.regex";
 
     private static Configuration instance;
-	private String concatenateDelimitter;
+	private String concatenateDelimiter;
 	private int[] retainConsecutiveUnmatchedCharsAsIs;
 	
 	private Properties configFileProperties;
@@ -56,7 +60,10 @@ public class Configuration {
 		try {
 			configFileProperties.load(Configuration.class.getClassLoader().getResourceAsStream(CONFIG_FILE_PATH));
 		} catch (Exception e) {
-			e.printStackTrace();
+			//This is FATAL. The application should never reach here
+		    System.err.println("System error. Terminating the application");
+		    e.printStackTrace();
+		    System.exit(1);
 		}
 	}
 	
@@ -64,11 +71,12 @@ public class Configuration {
 	 * Default Character string to be used to concatenate two different dictionary words used for the same number. 
 	 * @return Returns character string to concatenate two different words used for the same number. Defaults to -
 	 */
-	public String wordConcatenateDelimitter() {
-		if(concatenateDelimitter != null)
-			return concatenateDelimitter;
-		concatenateDelimitter = getFromSystemPropertyFirst(WORDS_CONCATENATE_DELIMITTER_KEY, "-");
-		return concatenateDelimitter;
+	public String wordConcatenateDelimiter() {
+		if(concatenateDelimiter != null)
+			return concatenateDelimiter;
+		concatenateDelimiter = getFromSystemPropertyFirst(WORDS_CONCATENATE_DELIMITER_KEY, "-");
+		LOGGER.log(Level.INFO, "Delimiter to concatenate words: {0}", concatenateDelimiter);
+		return concatenateDelimiter;
 	}
 	
 	/**
@@ -82,16 +90,17 @@ public class Configuration {
 			return retainConsecutiveUnmatchedCharsAsIs;
 		String str = getFromSystemPropertyFirst(RETAIN_CONS_UNMATCHED_DIGITS_ASIS_KEY,"1");
 		try {
-		retainConsecutiveUnmatchedCharsAsIs = Arrays.stream(str.split("\\s*,\\s*"))
+			retainConsecutiveUnmatchedCharsAsIs = Arrays.stream(str.split("\\s*,\\s*"))
 				.map((str1)-> str1.trim())
 		        .mapToInt(Integer::valueOf)
 		        .toArray();
+			LOGGER.log(Level.INFO, "No. of consecutive characters {0} to retain when no match is found", Arrays.toString(retainConsecutiveUnmatchedCharsAsIs));
 		}
 		//If invalid user input default to 1
 		catch(NumberFormatException nfe) {
+			LOGGER.log(Level.INFO, "Invalid key: {0}. Defaulting it to 1",RETAIN_CONS_UNMATCHED_DIGITS_ASIS_KEY);
 			retainConsecutiveUnmatchedCharsAsIs = new int[] {1};
 		}
-		System.out.println(Arrays.toString(retainConsecutiveUnmatchedCharsAsIs));
 		return retainConsecutiveUnmatchedCharsAsIs;
 	}
 

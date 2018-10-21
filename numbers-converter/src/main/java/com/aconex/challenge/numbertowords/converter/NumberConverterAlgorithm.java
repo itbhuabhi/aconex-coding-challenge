@@ -58,7 +58,7 @@ public class NumberConverterAlgorithm implements InputTransformer<Set<String>> {
 	 * Delimiter to be used to concatenate matching words, which is determined by configuration element concatenate.delimtter. Defaults to hyphen
 	 */
 
-	private final String delimitter = Configuration.getInstance().wordConcatenateDelimitter();
+	private final String delimiter = Configuration.getInstance().wordConcatenateDelimiter();
 	
 	/**
 	 * No. of consecutive digits which can remain as-is without a matching word. Determined by configuration element unchangedigits.list
@@ -197,7 +197,7 @@ public class NumberConverterAlgorithm implements InputTransformer<Set<String>> {
 
 		/**
 		 * This method would expect two sets prefixMatches and suffixMatches. 
-		 * The matches from two sets are concatenated separated by a delimitter.
+		 * The matches from two sets are concatenated separated by a delimiter.
 		 * Each set will have either all Partial Matches or all Complete Matches, but if any of the
 		 * set is of partial matches then the concatenated strings would go in the partialDictionaryMatches
 		 * 
@@ -211,7 +211,7 @@ public class NumberConverterAlgorithm implements InputTransformer<Set<String>> {
 			for (String prefixMatch : prefixMatches) {
 				for (String suffixMatch : suffixMatches) {
 					StringBuilder concatenatedString = new StringBuilder();
-					concatenatedString.append(prefixMatch).append(delimitter).append(suffixMatch);
+					concatenatedString.append(prefixMatch).append(delimiter).append(suffixMatch);
 					if (hasPartialMatches) {
 						partialDictionaryMatches.add(concatenatedString.toString());
 					} else {

@@ -86,7 +86,7 @@ public class NumConverterAlgoTestForMultiUnchangedDigits extends NumberConverter
 		Configuration mockConfig = mock(Configuration.class);
 		when(mockConfig.retainConsecutiveUnmatchedDigitsAsIs())
 				.thenReturn(unchangedDigitsArr);
-		when(mockConfig.wordConcatenateDelimitter()).thenReturn("-");
+		when(mockConfig.wordConcatenateDelimiter()).thenReturn("-");
 		Configuration.setInstance(mockConfig);
 	}
 

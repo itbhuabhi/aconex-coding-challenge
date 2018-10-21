@@ -41,7 +41,7 @@ public class CommonTestBase {
 		Configuration mockConfig = mock(Configuration.class);
 		when(mockConfig.retainConsecutiveUnmatchedDigitsAsIs())
 				.thenReturn(new int[]{1});
-		when(mockConfig.wordConcatenateDelimitter()).thenReturn("-");
+		when(mockConfig.wordConcatenateDelimiter()).thenReturn("-");
 		when(mockConfig.stripCharactersRegex()).thenReturn("[\\p{Punct}\\s]");
 		when(mockConfig.dictValidRegex()).thenReturn("^[A-Za-z]{1,}$");
 		when(mockConfig.numberValidRegex()).thenReturn("^[0-9]{1,}$");

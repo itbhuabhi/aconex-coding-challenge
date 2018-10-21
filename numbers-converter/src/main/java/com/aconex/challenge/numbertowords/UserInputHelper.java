@@ -22,8 +22,9 @@ public class UserInputHelper {
 	private static final String INVALID_FILE_PATH_MESSAGE_KEY = "invalid.file.path";
 
 	
-	private static final String SYS_PROP_DICT_PATH = "dictionary.path";
-	List<String> phoneNumbersFilePaths;
+	protected static final String SYS_PROP_DICT_PATH = "dictionary.path";
+	private static final String SAMPLE_USE_COMMAND_ARG = "USE_SAMPLE";
+	private List<String> phoneNumbersFilePaths;
 	private String dictionaryPath;
 
 	public static void main(String[] args) {
@@ -39,9 +40,7 @@ public class UserInputHelper {
 		dictionaryPath = System.getProperty(SYS_PROP_DICT_PATH);
 		if (commandLineArgs.length == 0) {
 			System.out.println(MessagesUtil.getString(NO_ARGS_MESSAGE_KEY));
-			Scanner stdInputScanner = new Scanner(System.in);
-			String userInput = stdInputScanner.nextLine().trim().toUpperCase();
-			stdInputScanner.close();
+			String userInput = getUserInput();
 			switch (userInput) {
 				case "" :
 					System.out.println(MessagesUtil.getString(NO_INPUT_MESSAGE_KEY));
@@ -57,11 +56,19 @@ public class UserInputHelper {
 					phoneNumbersFilePaths = Arrays.asList(userInput.split("\\s+"));
 			}
 		} else {
-			phoneNumbersFilePaths =  Arrays.asList(commandLineArgs);
+			if(!(commandLineArgs.length == 1 && commandLineArgs[0].equals(SAMPLE_USE_COMMAND_ARG)))
+				phoneNumbersFilePaths =  Arrays.asList(commandLineArgs);
 		}
 		if(!areFilePathsValid()) {
 			System.exit(0);
 		}
+	}
+	
+	protected String getUserInput() {
+		Scanner stdInputScanner = new Scanner(System.in);
+		String userInput = stdInputScanner.nextLine().trim().toUpperCase();
+		stdInputScanner.close();
+		return userInput;
 	}
 	
 	/**
@@ -80,12 +87,12 @@ public class UserInputHelper {
 		return dictionaryPath;
 	}
 
-	private boolean areFilePathsValid() {
+	protected boolean areFilePathsValid() {
 		boolean allFilePathsValid = true;
 		if(!CollectionsUtil.isNullOrEmpty(phoneNumbersFilePaths)) {
 			for(String phoneNumbersFilePath: phoneNumbersFilePaths) {
 				if(!IOUtils.isValidFilePath(phoneNumbersFilePath) ) {
-					System.err.println(MessagesUtil.getString(INVALID_FILE_PATH_MESSAGE_KEY, phoneNumbersFilePaths));
+					System.err.println(MessagesUtil.getString(INVALID_FILE_PATH_MESSAGE_KEY, phoneNumbersFilePath));
 					allFilePathsValid = false;
 				}
 			}

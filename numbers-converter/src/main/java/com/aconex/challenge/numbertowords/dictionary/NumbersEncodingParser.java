@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -38,11 +39,11 @@ import com.aconex.challenge.numbertowords.util.StringUtil;
  */
 public class NumbersEncodingParser {
 	
-	private static Logger LOG = Logger.getLogger(NumbersEncodingParser.class.toString());
+	private static Logger LOGGER = Logger.getLogger(NumbersEncodingParser.class.toString());
 	
 	private static final String COMMENT_START_CHAR_SEQUENCE = "#";
-	private static final String CHARS_DIGIT_DELIMITTER = "->";
-	private static final String CHARS_DELIMITTER = ",";
+	private static final String CHARS_DIGIT_DELIMITER = "->";
+	private static final String CHARS_DELIMITER = ",";
 	private static final String NUMBERS_ENCODING_FILE_NAME = "numbersEncoding.properties";
 	
 	private Map<String,String> charToDigitEncodingMap;
@@ -85,14 +86,17 @@ public class NumbersEncodingParser {
 				if (line.startsWith(COMMENT_START_CHAR_SEQUENCE)) {
 					return;
 				}
-				String[] alphabetDigitSplitArr = line.split(CHARS_DIGIT_DELIMITTER);
-				String[] alphabets = alphabetDigitSplitArr[0].split(CHARS_DELIMITTER);
+				String[] alphabetDigitSplitArr = line.split(CHARS_DIGIT_DELIMITER);
+				String[] alphabets = alphabetDigitSplitArr[0].split(CHARS_DELIMITER);
 				String digit = alphabetDigitSplitArr[1].trim();
 				for (String alphabet : alphabets) {
 					charToDigitEncodingMap.put(alphabet.trim(), digit);
 				}
 			});
 		}
+		if (LOGGER.isLoggable(Level.FINER)) {
+            LOGGER.log(Level.FINER, "Number encoding map being used: {0}", charToDigitEncodingMap );
+}
 	}
 
 }

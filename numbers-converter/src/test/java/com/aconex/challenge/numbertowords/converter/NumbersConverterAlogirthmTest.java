@@ -48,7 +48,7 @@ public class NumbersConverterAlogirthmTest extends NumberConverterAlgorithmTestB
 	public void setUp() throws Exception {
 		Configuration mockConfig = mock(Configuration.class);
 		when(mockConfig.retainConsecutiveUnmatchedDigitsAsIs()).thenReturn(new int[] {1});
-		when(mockConfig.wordConcatenateDelimitter()).thenReturn("-");
+		when(mockConfig.wordConcatenateDelimiter()).thenReturn("-");
 		Configuration.setInstance(mockConfig);
 	}
 	

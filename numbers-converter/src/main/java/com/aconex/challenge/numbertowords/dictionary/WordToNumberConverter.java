@@ -1,6 +1,8 @@
 package com.aconex.challenge.numbertowords.dictionary;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.aconex.challenge.numbertowords.dictionary.transformers.InputTransformer;
 import com.aconex.challenge.numbertowords.dictionary.transformers.TransformerContainer;
@@ -24,6 +26,7 @@ import com.aconex.challenge.numbertowords.util.CollectionsUtil;
  *
  */
 public class WordToNumberConverter implements InputTransformer<String> {
+	private static final Logger LOGGER = Logger.getLogger(WordToNumberConverter.class.getName());
 	Map<String,String> numbersEncodingMap;
 	InputTransformer<String> parentTransformer;
 	
@@ -80,6 +83,9 @@ public class WordToNumberConverter implements InputTransformer<String> {
 		
 		if(wordToBeConverted != null) { // This check means there was no error returned from the parent transformer
 			wordToNumTransformerContainer.setTransformed(convertWordToNumber(wordToBeConverted));
+			if (LOGGER.isLoggable(Level.FINEST)) {
+                LOGGER.log(Level.FINEST, "Dictionary word transformation: {0} ", wordToNumTransformerContainer);
+			}
 		}
 		
 	}

@@ -1,6 +1,9 @@
 package com.aconex.challenge.numbertowords.dictionary;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import com.aconex.challenge.numbertowords.dictionary.transformers.InputTransformer;
@@ -20,8 +23,10 @@ import com.aconex.challenge.numbertowords.util.CollectionsUtil;
  *
  */
 public abstract class DictionaryFactory {
+	private static final Logger LOGGER = Logger.getLogger(DictionaryFactory.class.getName());
 
 	private Dictionary dictionary;
+	
 	
 	/**
 	 * Word converter which would do any pre-processing, if decorated with other transformer, on each dictionary word before converting it to a number based on the number encoding. 
@@ -53,6 +58,9 @@ public abstract class DictionaryFactory {
 		dictionarySources.forEach((dictionarySource) -> {
 			populateDictionaryFromSingleSource(dictionarySource);
 		});
+		if (LOGGER.isLoggable(Level.FINER)) {
+			LOGGER.log(Level.FINER, "Dictionary succesfully created and populated");
+		}
 
 	}
 
@@ -61,11 +69,14 @@ public abstract class DictionaryFactory {
 	 * @param dictionarySource
 	 */
 	private void populateDictionaryFromSingleSource(Stream<String> dictionarySource) {
+		
 		dictionarySource.forEach((word) -> {
 			TransformerContainer<String> wordToNumTransformerContainer = new TransformerContainer<String>(word);
 			wordConverter.transform(wordToNumTransformerContainer);
 			if (!CollectionsUtil.isNullOrEmpty(wordToNumTransformerContainer.getErrors()) ) {
-				// TODO Log warning message
+				if (LOGGER.isLoggable(Level.FINE)) {
+					LOGGER.log(Level.FINE, "Invalid dictionary word: {0}. Skipping it", word);
+				}
 			} else {
 				String wordToBeAdded = wordToNumTransformerContainer.getInput();
 				String matchingNumber = wordToNumTransformerContainer.getTransformed();

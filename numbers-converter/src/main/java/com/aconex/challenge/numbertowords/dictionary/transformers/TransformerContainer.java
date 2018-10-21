@@ -3,6 +3,8 @@ package com.aconex.challenge.numbertowords.dictionary.transformers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.aconex.challenge.numbertowords.util.CollectionsUtil;
 /**
  * 
  * It is a generic container class of the below different transformations that happen now in converting numbers to a word combination.
@@ -130,11 +132,12 @@ public class TransformerContainer<T> {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("TransformerContainer:: ");
-		sb.append("input: ").append(input);
-		sb.append(", transformed: ").append(transformed);
-		sb.append(", errors= ").append(errors);
-		return "TransformerContainer [input=" + input + ", transformed=" + transformed + ", errors=" + errors + "]";
+		StringBuilder sb = new StringBuilder();
+		sb.append("Input: ").append(input);
+		sb.append(", Transformed: ").append(transformed);
+		if(!CollectionsUtil.isNullOrEmpty(errors))
+			sb.append(", Errors: ").append(errors);
+		return sb.toString();
 	}
 	
 	

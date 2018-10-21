@@ -9,8 +9,9 @@ import java.util.ResourceBundle;
  * @author Abhishek Agarwal
  *
  */
+
 public class MessagesUtil {
-	// property file is: package/name/messages.properties
+	// property file is: messages/messages.properties
 	private static final String BUNDLE_NAME = "messages.messages";
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 	private MessagesUtil() {

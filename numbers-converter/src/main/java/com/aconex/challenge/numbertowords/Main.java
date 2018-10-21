@@ -2,16 +2,20 @@ package com.aconex.challenge.numbertowords;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
+import com.aconex.challenge.numbertowords.config.Configuration;
 import com.aconex.challenge.numbertowords.converter.NumberConverterAlgorithm;
 import com.aconex.challenge.numbertowords.converter.NumbersConverter;
 import com.aconex.challenge.numbertowords.dictionary.Dictionary;
@@ -65,7 +69,7 @@ import com.aconex.challenge.numbertowords.util.StringUtil;
  * 	<li>Transform it to a number using the number encoding ({@link WordToNumberConverter})</li>
  * </ul>
  * 
- * <p>For phone numbers
+ * <p>For phone numbers:
  * <ul>
  * 	<li>Strip punctuations and whitespaces and validate after that ({@link StripAndValidateInput})</li>
  *	<li>Convert number into matching word combinations ({@link NumberConverterAlgorithm})</li>
@@ -101,6 +105,8 @@ import com.aconex.challenge.numbertowords.util.StringUtil;
 
 public class Main {
 	
+	private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+	
 	private static final String SAMPLE_DICTIONARY_RESOURCE_PATH = "samples/commonWords.txt";
 	private static final String SAMPLE_NUMBERS_RESOURCE_PATH = "samples/samplePhoneNumbers.txt";
 
@@ -110,10 +116,27 @@ public class Main {
 	private static final String MATCH_MESSAGE_KEY = "number.matches";
 	private static final String INVALID_INPUT_MESSAGE_KEY = "invlaid.number";
 	
+	private static final String LOGGING_CONFIG_FILE = "configuration/logging.properties";
+	
+	static 
+	{
+		try
+		{
+		    LogManager.getLogManager().readConfiguration(Configuration.class.getClassLoader().getResourceAsStream(LOGGING_CONFIG_FILE));
+		}
+		catch (final IOException e)
+		{
+			//This is FATAL. The application should never reach here
+		    System.err.println("System error. Terminating the application");
+		    e.printStackTrace();
+		    System.exit(1);
+		}
+	}
+	
 	
 	/**
 	 * Starting point of the application
-	 * @param strArray Array of numbers file path, if non-empty
+	 * @param strArray Array of numbers file path. If empty or has one element equaling to 'USE_SAMPLE', then the application uses a sample numbers file.
 	 */
 
 	public static void main(String[] strArray)  {
@@ -169,7 +192,7 @@ public class Main {
 					e.printStackTrace();
 				}
 			}
-			if(samplePhoneNumbersFileReader != null) {
+			if(sampleDictionaryReader != null) {
 				try {
 					sampleDictionaryReader.close();
 				} catch (IOException e) {
