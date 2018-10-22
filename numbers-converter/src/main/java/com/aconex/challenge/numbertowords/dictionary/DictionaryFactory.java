@@ -1,7 +1,6 @@
 package com.aconex.challenge.numbertowords.dictionary;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -58,8 +57,14 @@ public abstract class DictionaryFactory {
 		dictionarySources.forEach((dictionarySource) -> {
 			populateDictionaryFromSingleSource(dictionarySource);
 		});
-		if (LOGGER.isLoggable(Level.FINER)) {
-			LOGGER.log(Level.FINER, "Dictionary succesfully created and populated");
+		if (dictionary.getUniqueNumbersCount() == 0) {
+			throw new IllegalArgumentException(
+					"Invalid dictionarySources passed. No legal dictionary words present in the dictionary");
+		} else {
+			if (LOGGER.isLoggable(Level.FINER)) {
+				LOGGER.log(Level.FINER,
+						"Dictionary succesfully created and populated");
+			}
 		}
 
 	}

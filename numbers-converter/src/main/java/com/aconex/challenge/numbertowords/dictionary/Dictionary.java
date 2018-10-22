@@ -54,4 +54,12 @@ public interface Dictionary {
 	 */
 	Set<String> findMatchingWords(String number);
 	
+	/**
+	 * Returns no. of unique number string keys added to the dictionary. Ideally the client would need to call this only after the dictionary is completely populated
+	 * @return No. of unique number string keys added to the dictionary
+	 */
+	int getUniqueNumbersCount();
+
 }
+
+

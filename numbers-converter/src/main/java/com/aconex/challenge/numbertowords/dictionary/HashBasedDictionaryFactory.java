@@ -54,7 +54,13 @@ public class HashBasedDictionaryFactory extends DictionaryFactory {
 				return map.get(number);
 	
 			}
+
+		@Override
+		public int getUniqueNumbersCount() {
+			return map.size();
+		}
 	
 	}
+
 
 }

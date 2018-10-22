@@ -19,10 +19,10 @@ export JAVA_OPTS="[options]"\n
 		\t\tComma separated list of no. of digits which can remain as-is if no matching word is found for them. Defaults to 1\n
 		\t\tEx-> if you want 2 consecutive digits unchanged, but no single digit remaining unchanged in isolation, then the option should be -Dunchangedigits.list=2\n
 		\t\tBut if you want maximum of 2 consecutive digits unchanged, then the option should be  -Dunchangedigits.list=1,2\n
-	\t-Dconcatenate.delimter=<delimiterchar>\n
+	\t-Dconcatenate.delimiter=<delimiterchar>\n
 		\t\tDelimiter character used to concatenate different words. Default to -\n
 \n		
-		\t\tEx-> export JAVA_OPTS="-Dunchangedigits.list=1,2,3,4,5 -Dconcatenate.delimtter=~"\n'
+		\t\tEx-> export JAVA_OPTS="-Dunchangedigits.list=1,2,3,4,5 -Dconcatenate.delimiter=~"\n'
 		
 		
 	CLASSPATH=../target/number-converter-1.0-SNAPSHOT.jar
@@ -45,6 +45,6 @@ export JAVA_OPTS="[options]"\n
 		esac
 	else
 		COMMAND_ARGS="$@"
-	fi	
+	fi
 	java -cp $CLASSPATH $JAVA_OPTS $MAIN_CLASS $COMMAND_ARGS
 )

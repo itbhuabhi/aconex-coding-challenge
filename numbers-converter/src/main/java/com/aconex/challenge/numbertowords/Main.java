@@ -2,7 +2,6 @@ package com.aconex.challenge.numbertowords;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -10,7 +9,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -29,7 +27,10 @@ import com.aconex.challenge.numbertowords.dictionary.transformers.UpperCaseTrans
 import com.aconex.challenge.numbertowords.util.CollectionsUtil;
 import com.aconex.challenge.numbertowords.util.MessagesUtil;
 import com.aconex.challenge.numbertowords.util.StringUtil;
-//Added quite verbose Javadoc here at this becomes the central point of understanding the flow and can be used to navigate to other classes.
+//Since this is the starting point of the application, so added quite verbose Javadoc here to summarize the entire application flow.
+//In general I have added a lot of comments, to make the code more clear 
+//and more importantly to communicate my thought process
+
 /**
  * This is the starting point of the application. The flow of the application can be summarized as.
  * 
@@ -113,6 +114,8 @@ public class Main {
 	private static final String NO_MATCH_MESSAGE_KEY = "number.none.match";
 	private static final String IO_ERROR_MESSAGE_KEY = "io.error";
 	
+	private static final String EMPTY_DICTIONARY_MESSAGE_KEY = "empty.dictionary";
+
 	private static final String MATCH_MESSAGE_KEY = "number.matches";
 	private static final String INVALID_INPUT_MESSAGE_KEY = "invlaid.number";
 	
@@ -204,7 +207,15 @@ public class Main {
 	
 	private static void convert(List<Stream<String>> dictionarySources, List<Stream<String>> numbersStreams) {
 		ApplicationFacade applicationFacade = new ApplicationFacade();
-		applicationFacade.createAndPopulateDictionary(dictionarySources);
+		try {
+			applicationFacade.createAndPopulateDictionary(dictionarySources);
+		} catch (IllegalArgumentException ie) {
+			System.out.println(
+					MessagesUtil.getString(EMPTY_DICTIONARY_MESSAGE_KEY));
+			return;
+		}
+
+
 		applicationFacade.initNumbersConverter();
 		NumbersConverter converter = applicationFacade.getNumbersConverter();
 		converter.convertNumbers(numbersStreams, 

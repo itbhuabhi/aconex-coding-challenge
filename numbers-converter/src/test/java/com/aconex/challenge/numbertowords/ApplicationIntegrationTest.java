@@ -37,10 +37,25 @@ public class ApplicationIntegrationTest extends CommonTestBase {
 	}
 
 	private List<Stream<String>> getDictionaryAndNumberStreams(String... strings) {
+		if(strings == null)
+			return Collections.singletonList(Stream.empty());
 		return Collections.singletonList(Stream.of(strings));
 	}
 	
+	// Tests for empty dictionary
+	@Test(expected = IllegalArgumentException.class)
+	public void test_For_Empty_Dictionary() {
+		ApplicationFacade applicationFacade = mockApplicationFacade();
+		applicationFacade.createAndPopulateDictionary(getDictionaryAndNumberStreams(null));
+	}
 
+
+	// Tests for dictionary sources such that they don't have even a single legal word
+	@Test(expected = IllegalArgumentException.class)
+	public void test_For_Dictionary_With_No_Legal_Words() {
+		ApplicationFacade applicationFacade = mockApplicationFacade();
+		applicationFacade.createAndPopulateDictionary(getDictionaryAndNumberStreams("123", "1234!@"));
+	}
 	
 
 	//No noise in the numbers and the words and words are in upper case.
@@ -138,6 +153,7 @@ public class ApplicationIntegrationTest extends CommonTestBase {
 	}
 	
 }
+
 
 
 
