@@ -59,6 +59,7 @@ Javadocs specifically can be found at:
 Please note similar explaination is given in the Javadocs of the start class - `com.aconex.challenge.numbertowords.Main`. The Javadocs allows easy navigation to other classes. 
 
 The flow of the application can be summarized as.
+
 There are two main inputs given to the application by the user. File(s) containing different phone numbers which are to be translated. And a dictionary file which contains the different words which are to be used to convert the number into word combination(s). The class `UserInputHelper` is used to interact with the user using command line, and receives the file paths for the dictionary words and phone numbers.
 
 When numbers are converted to a word, each character of the word maps uniquely to a digit. This number encoding is stored in an internal configuration file and is parsed by `NumbersEncodingParser`, which converts it into a map of characters to digits.
