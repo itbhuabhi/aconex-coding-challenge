@@ -58,22 +58,22 @@ Javadocs specifically can be found at:
 
 Please note similar explaination is given in the Javadocs of the start class - `com.aconex.challenge.numbertowords.Main`. The Javadocs allows easy navigation to other classes. 
 
-<p>The flow of the application can be summarized as.\
+The flow of the application can be summarized as.
 There are two main inputs given to the application by the user. File(s) containing different phone numbers which are to be translated. And a dictionary file which contains the different words which are to be used to convert the number into word combination(s). The class `UserInputHelper` is used to interact with the user using command line, and receives the file paths for the dictionary words and phone numbers.
 
-<p>When numbers are converted to a word, each character of the word maps uniquely to a digit. This number encoding is stored in an internal configuration file and is parsed by `NumbersEncodingParser`, which converts it into a map of characters to digits.
+When numbers are converted to a word, each character of the word maps uniquely to a digit. This number encoding is stored in an internal configuration file and is parsed by `NumbersEncodingParser`, which converts it into a map of characters to digits.
 
-<p>Furthermore, the words are stored in the `Dictionary` object but in numbers form. Simple reason being each word uniquely maps to a number, not the other way round. This makes the searching of sub-sequence of number less complex. So we would store the number form of a user dictionary word as the key and the set of words it maps to as the value in the `Dictionary` object.
+Furthermore, the words are stored in the `Dictionary` object but in numbers form. Simple reason being each word uniquely maps to a number, not the other way round. This makes the searching of sub-sequence of number less complex. So we would store the number form of a user dictionary word as the key and the set of words it maps to as the value in the `Dictionary` object.
 
-<p>But even before the word given in user dictionary can be converted to number, we need to take care of stripping punctuations and whitespaces. And then convert it to uppercase. And lastly validate if the transformed input is valid or not.
+But even before the word given in user dictionary can be converted to number, we need to take care of stripping punctuations and whitespaces. And then convert it to uppercase. And lastly validate if the transformed input is valid or not.
 
-<p>Similarly before finding matches for a number we need to do a similar thing i.e. get rid of punctuations and whitespaces and validate it.
+Similarly before finding matches for a number we need to do a similar thing i.e. get rid of punctuations and whitespaces and validate it.
 
-<p>So this suggests that both user dictionary words and phone numbers involve series of transformation.
+So this suggests that both user dictionary words and phone numbers involve series of transformation.
 
-<p>To support these transformations there is an interface `InputTransformer` which defines a common contract and all transformation classes implment this interface. This allows a transformation to be decorated with another transformation.
+To support these transformations there is an interface `InputTransformer` which defines a common contract and all transformation classes implment this interface. This allows a transformation to be decorated with another transformation.
 
-<p>This chaining of transformers makes it easy if some of the business rules related to transformation are changed. Or the application needs to support other language, or some other number encoding. The various transformers used in the application are as.<br>
+This chaining of transformers makes it easy if some of the business rules related to transformation are changed. Or the application needs to support other language, or some other number encoding. The various transformers used in the application are as.<br>
 
 For dictionary words::
 
